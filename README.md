@@ -37,3 +37,16 @@ func main() {
     r.Run() 
 }
 ```
+
+### Creating hashes
+
+crypt(3) hashes can be created in different ways. Below are some examples.
+
+    # MD5
+    printf "password" | mkpasswd --stdin --method=md5
+    
+    # SHA256
+    printf "password" | mkpasswd --stdin --method=sha-256
+    
+    # SHA512
+    printf "password" | mkpasswd --stdin --method=sha-512

@@ -12,7 +12,7 @@ Basic authorization middleware for [Gin](https://github.com/gin-gonic/gin) that 
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+    "github.com/gin-gonic/gin"
     c3ba "github.com/osoderholm/gin-crypt3-basicauth"
 )
 
@@ -28,11 +28,12 @@ func main() {
     // Use the middleware
     r.Use(c3ba.BasicAuth(users))
     
-    r.GET("/ping", func(c *gin.Context) {
-    		c.JSON(200, gin.H{
-    			"message": "pong",
-    		})
-    	})
+    r.GET("/", func(c *gin.Context) {
+    	user := c.MustGet(c3ba.AuthUserKey)
+        c.JSON(200, gin.H{
+            "user": user,
+        })
+    })
 
     r.Run() 
 }

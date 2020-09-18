@@ -8,6 +8,33 @@ Basic authorization middleware for [Gin](https://github.com/gin-gonic/gin) that 
     
 ## Usage
 
+Import the package as `c3ba`
+
+```go
+import (
+    ...
+    c3ba "https://github.com/osoderholm/gin-crypt3-basicauth"
+    ...
+)
+```
+
+Create a `map[string]string` of allowed users. This implementation is up to you.
+
+Use the middleware
+
+```go
+router := gin.Default()
+router.Use(c3ba.BasicAuth(usersMap))
+```
+
+Access the authenticated user from `gin.Context`
+
+```go
+authenticatedUser := c.MustGet(c3ba.AuthUserKey)
+```
+
+### Example
+
 ```go
 package main
 

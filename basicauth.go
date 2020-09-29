@@ -5,6 +5,8 @@ import (
 	"errors"
 	"github.com/GehirnInc/crypt"
 	"github.com/gin-gonic/gin"
+	"strconv"
+
 	// crypt(3) algorithms
 	_ "github.com/GehirnInc/crypt/md5_crypt"
 	_ "github.com/GehirnInc/crypt/sha256_crypt"
@@ -30,16 +32,18 @@ func BasicAuth(users map[string]string) gin.HandlerFunc {
 		}
 	}
 
+	realm := "Basic realm=" + strconv.Quote("Authorization Required")
+
 	return func(c *gin.Context) {
 		user, found := validateAuthorizationCrypt(users, c.Request.Header.Get("Authorization"))
 		if !found {
 			// Credentials don't match, return 401 and abort handlers chain.
-			c.Header("WWW-Authenticate", "")
+			c.Header("WWW-Authenticate", realm)
 			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
 
-		// The user credentials were found, set users name to key AuthUserKey in this context, 
+		// The user credentials were found, set users name to key AuthUserKey in this context,
 		// the authenticated users username can be read later using c.MustGet(gin.AuthUserKey).
 		c.Set(AuthUserKey, user)
 	}
